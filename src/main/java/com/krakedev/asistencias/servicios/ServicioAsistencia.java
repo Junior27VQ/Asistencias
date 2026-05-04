@@ -19,26 +19,20 @@ public class ServicioAsistencia {
 		this.servicioEstudiantes=servicioEstudiantes;
 	}
 	public RegistroAsistencia registroAsistencia(String cedula) {
-		RegistroAsistencia ra=null;
 		Estudiante estudiante=servicioEstudiantes.buscarPorCedula(cedula);
 		if(estudiante!=null) {
-			Asistencia asistencia=new Asistencia(
-					LocalDate.now(),
-					LocalDateTime.now(),
-					"p"
-					);
-			ra=new RegistroAsistencia(estudiante,asistencia);
-			registros.add(ra);
+			Asistencia asistencia=new Asistencia(LocalDate.now(),LocalDateTime.now(),"P");
+			RegistroAsistencia nuevo=new RegistroAsistencia(estudiante,asistencia);
+			registros.add(nuevo);
+			return nuevo;
 		}
-		return ra;
+		return null;
 	}
 	public ArrayList<Asistencia> consultarAsistencia(String cedula){
 		ArrayList<Asistencia> asistencia=new ArrayList<Asistencia>();
-		Estudiante e=servicioEstudiantes.buscarPorCedula(cedula);
-		for(RegistroAsistencia ra:registros) {
-			if(ra.getEstudiante()==e && e!=null) {
-				Asistencia a=ra.getAsistencia();
-				asistencia.add(a);
+		for(RegistroAsistencia registro:registros) {
+			if(registro.getEstudiante().getCedula().equals(cedula)) {
+				asistencia.add(registro.getAsistencia());
 			}
 		}
 		return asistencia;
